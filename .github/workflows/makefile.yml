@@ -1,7 +1,7 @@
 
 Workflow file for this run
 .github/workflows/pbrp-organization-ci-2.yml at 61a50c6
-name: PBRP Organization CI 2
+name: PBRP_CD6
 on:
   workflow_dispatch:
     inputs:
