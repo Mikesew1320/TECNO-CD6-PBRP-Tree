@@ -9,7 +9,7 @@ on:
       ChangeLogs:
         description: 'Build ChangeLogs'
         required: true
-        default: 'Sync Latest Source.\nInitial and stable release.\nFixed FastbootD.\nFixed Flashlight.\nEnabled backup and flash support for all partitions.'
+        default: 'Sync Latest Source.'
 
 env:
   BUILD_RELEASE_TYPE: ${{ github.event.inputs.DEPLOY_TYPE }}
