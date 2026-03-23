@@ -30,7 +30,7 @@ $(call inherit-product, vendor/pb/config/common.mk)
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := CD6
-PRODUCT_NAME := omni_$(PRODUCT_DEVICE)
+PRODUCT_NAME := pb_$(PRODUCT_DEVICE)
 PRODUCT_BRAND := TECNO
 PRODUCT_MODEL := TECNO CD6
 PRODUCT_MANUFACTURER := TECNO MOBILE LIMITED
