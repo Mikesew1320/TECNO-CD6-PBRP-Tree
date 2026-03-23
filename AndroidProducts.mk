@@ -15,6 +15,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-   $(LOCAL_DIR)/omni_CD6.mk
+   $(LOCAL_DIR)/pb_CD6.mk
 
-COMMON_LUNCH_CHOICES := omni_CD6-eng
+COMMON_LUNCH_CHOICES := \
+    pb_CD6-user \
+    pb_CD6-userdebug \
+    pb_CD6-eng
