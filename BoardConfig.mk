@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-DEVICE_PATH := device/TECNO/CD6
+DEVICE_PATH := device/tecno/CD6
 
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
