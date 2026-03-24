@@ -39,6 +39,10 @@ TARGET_BOARD_PLATFORM := mt6765
 TARGET_BOOTLOADER_BOARD_NAME := mt6765
 TARGET_NO_BOOTLOADER := true
 
+# Verify the path (uncomment to debug)
+$(info Using device path: $(DEVICE_PATH))
+$(info dtb.img exists: $(wildcard $(DEVICE_PATH)/prebuilt/dtb.img))
+
 # Kernel
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive
 BOARD_KERNEL_IMAGE_NAME := Image
@@ -49,18 +53,18 @@ BOARD_KERNEL_TAGS_OFFSET := 0x07808000
 BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_RAMDISK_OFFSET := 0x11a88000
 BOARD_DTB_OFFSET := 0x07808000
+TARGET_KERNEL_ARCH := arm64
 
 # Prebuilt kernel
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz
 
-# DTB - Option 1: Use prebuilt dtb.img
+# Prebuilt dtb.img - THIS IS THE KEY
 BOARD_PREBUILT_DTB_IMAGE := $(DEVICE_PATH)/prebuilt/dtb.img
-BOARD_MKBOOTIMG_ARGS += --dtb $(BOARD_PREBUILT_DTB_IMAGE)
 
-# DTBO
+# Prebuilt dtbo.img
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 
-# Boot image args
+# Boot image arguments
 BOARD_MKBOOTIMG_ARGS += --base $(BOARD_KERNEL_BASE)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE)
 BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
@@ -69,9 +73,17 @@ BOARD_MKBOOTIMG_ARGS += --kernel_offset $(BOARD_KERNEL_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 
-# Include in recovery
-BOARD_INCLUDE_RECOVERY_DTBO := true
+# Include dtb in boot image
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+
+# For recovery
+BOARD_INCLUDE_RECOVERY_DTBO := true
+
+# CRITICAL: Force dtb.img to be recognized
+ifneq ($(BOARD_PREBUILT_DTB_IMAGE),)
+    $(call add-copy-task, $(BOARD_PREBUILT_DTB_IMAGE), $(TARGET_OUT)/dtb.img)
+    INSTALLED_DTBIMAGE_TARGET := $(TARGET_OUT)/dtb.img
+endif
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072
