@@ -16,17 +16,23 @@
 
 DEVICE_PATH := device/tecno/CD6
 
-# Release name
-PRODUCT_RELEASE_NAME := TECNO-CD6
+# Configure base.mk
+$(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
-PRODUCT_USE_DYNAMIC_PARTITIONS := true
+# Configure core_64_bit_only.mk
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
+
+# Configure emulated_storage.mk
+$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
+
+# Device specific configs
+$(call inherit-product, device/tecno/CD6/device.mk)
+
+# Configure compression
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
 
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/pb/config/common.mk)
-
-#PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,device/TECNO/CD6/recovery/root,recovery/root) \
- #   device/TECNO/CD6/prebuilt/dtb:dtb.img
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := CD6
