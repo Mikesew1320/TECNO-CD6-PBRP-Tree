@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-DEVICE_PATH := device/TECNO/CD6
+DEVICE_PATH := device/tecno/CD6
 
 # Release name
 PRODUCT_RELEASE_NAME := TECNO-CD6
