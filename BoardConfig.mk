@@ -39,10 +39,6 @@ TARGET_BOARD_PLATFORM := mt6765
 TARGET_BOOTLOADER_BOARD_NAME := mt6765
 TARGET_NO_BOOTLOADER := true
 
-# Verify the path (uncomment to debug)
-$(info Using device path: $(DEVICE_PATH))
-$(info dtb.img exists: $(wildcard $(DEVICE_PATH)/prebuilt/dtb.img))
-
 # Kernel configuration (keep your existing config)
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive
 BOARD_KERNEL_IMAGE_NAME := Image
@@ -73,6 +69,7 @@ BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 # Include in boot and recovery
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_INCLUDE_RECOVERY_DTBO := true
+
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_BOOTIMAGE_PARTITION_SIZE := 40894464
