@@ -1,0 +1,64 @@
+version: 2.1
+
+jobs:
+  build-twrp:
+    docker:
+      - image: ubuntu:20.04
+    environment:
+      DEVICE: "CD6"
+      TWRP_BRANCH: "twrp-12.1"
+      ANDROID_ROOT: "/home/circleci/android"
+      CCACHE_DIR: "/home/circleci/.ccache"
+    steps:
+      - checkout
+
+      # Install dependencies
+      - run:
+          name: Install build tools
+          command: |
+            apt-get update
+            apt-get install -y git repo wget unzip openjdk-8-jdk python3 bc curl rsync build-essential ccache
+
+      # Initialize repo (if needed)
+      - run:
+          name: Initialize Android repo
+          command: |
+            mkdir -p $ANDROID_ROOT
+            cd $ANDROID_ROOT
+            # Optional: initialize full AOSP repo if needed
+            # repo init -u https://github.com/LineageOS/android.git -b lineage-20.0
+            # repo sync -c -j$(nproc)
+
+      # Clone device trees & TWRP
+      - run:
+          name: Clone TWRP device tree
+          command: |
+            cd $ANDROID_ROOT
+            git clonehttps://github.com/Mikesew1320/TECNO-CD6-PBRP-Tree_$DEVICE device/TECNO/$DEVICE
+            git clone -b $TWRP_BRANCH https://github.com/TeamWin/android_bootable_recovery bootable/recovery
+
+      # Set up environment
+      - run:
+          name: Setup build environment
+          command: |
+            cd $ANDROID_ROOT
+            source build/envsetup.sh
+            lunch omni_$DEVICE-eng
+
+      # Build recovery image
+      - run:
+          name: Build TWRP recovery
+          command: |
+            cd $ANDROID_ROOT
+            mka recoveryimage
+
+      # Save artifacts
+      - store_artifacts:
+          path: $ANDROID_ROOT/out/target/product/$DEVICE/recovery.img
+          destination: recovery.img
+
+workflows:
+  version: 2
+  build-and-store:
+    jobs:
+      - build-twrp
